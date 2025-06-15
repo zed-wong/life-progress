@@ -1,21 +1,24 @@
 <script lang="ts">
-	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
+	import { cn } from '$lib/utils';
+	import { goto } from '$app/navigation';
+	import { userDataStore } from '$lib/stores';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { Calendar } from '$lib/components/ui/calendar';
 	import * as Popover from '$lib/components/ui/popover';
-	import { goto } from '$app/navigation';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
-	import { DateFormatter, type DateValue, getLocalTimeZone } from '@internationalized/date';
-	import { cn } from '$lib/utils';
 	import { buttonVariants } from '$lib/components/ui/button';
+	import { DateFormatter, type DateValue, getLocalTimeZone, CalendarDate, today } from '@internationalized/date';
+	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
 
-	const df = new DateFormatter('en-US', {
+	const userLocale = typeof navigator !== 'undefined' ? navigator.language || 'en-US' : 'en-US';
+	const df = new DateFormatter(userLocale, {
 		dateStyle: 'long'
 	});
 
-	let birthday: DateValue | undefined = undefined;
+	const now = today(getLocalTimeZone());
+	let birthday: DateValue = new CalendarDate(now.year - 30, 1, 1);
 	let lifeExpectancy = 100;
 	let contentRef: HTMLElement | null = null;
 
@@ -23,16 +26,17 @@
 		if (!birthday) return;
 		
 		const userData = {
-			birthday: birthday.toDate(getLocalTimeZone()),
-			lifeExpectancy
+			birthday: birthday.toDate(getLocalTimeZone()).toString(),
+			lifeExpectancy,
+			locale: userLocale,
 		};
 
-		localStorage.setItem('user-data', JSON.stringify(userData));
+		userDataStore.set(userData);
 		goto('/stats');
 	}
 </script>
 
-<div class="container mx-auto flex items-center justify-center min-h-screen p-4">
+<div class="mx-auto flex items-center justify-center h-full p-4">
 	<Card class="w-full max-w-md">
 		<CardHeader>
 			<CardTitle class="text-2xl font-bold text-center">Let's Get Started</CardTitle>

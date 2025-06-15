@@ -4,6 +4,7 @@ import { writable } from 'svelte/store';
 export interface UserData {
     birthday: string;
     lifeExpectancy: number;
+    locale: string;
 }
 
 // Helper function to safely access localStorage
@@ -66,4 +67,4 @@ function createPersistedStore<T>(key: string, initialValue: T | null = null) {
 }
 
 // Create and export the userData store
-export const userData = createPersistedStore<UserData>('userData'); 
+export const userDataStore = createPersistedStore<UserData>('user-data'); 

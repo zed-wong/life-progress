@@ -8,7 +8,7 @@
 	}
 </script>
 
-<div class="container mx-auto flex items-center justify-center min-h-screen p-4">
+<div class="mx-auto flex items-center justify-center h-full p-4">
 	<Card class="w-full max-w-2xl">
 		<CardHeader class="text-center">
 			<CardTitle class="text-4xl font-bold mb-4">Your Life in Weeks</CardTitle>

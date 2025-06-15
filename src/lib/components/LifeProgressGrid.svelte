@@ -1,15 +1,22 @@
 <!-- LifeProgressGrid.svelte -->
 <script lang="ts">
     import { Card, CardHeader, CardTitle, CardContent } from "$lib/components/ui/card/index";
+    import { Progress } from "$lib/components/ui/progress/index";
+    import { userDataStore } from "$lib/stores";
     import { cn } from "$lib/utils";
     
-    export let birthday: string;
-    export let lifeExpectancy: number;
+    // Access store value using $derived in Svelte 5
+    const userData = $derived($userDataStore);
+    
+    // Provide default values if userData is null
+    const birthday = $derived(userData?.birthday || '1990-01-01');
+    const lifeExpectancy = $derived(userData?.lifeExpectancy || 100);
 
-    // Calculate weeks lived
-    $: weeksLived = Math.floor((Date.now() - new Date(birthday).getTime()) / (7 * 24 * 60 * 60 * 1000));
-    $: weeksLeft = (lifeExpectancy * 52) - weeksLived;
-    $: totalWeeks = lifeExpectancy * 52;
+    // Calculate weeks lived using $derived
+    const weeksLived = $derived(Math.floor((Date.now() - new Date(birthday).getTime()) / (7 * 24 * 60 * 60 * 1000)));
+    const weeksLeft = $derived((lifeExpectancy * 52) - weeksLived);
+    const totalWeeks = $derived(lifeExpectancy * 52);
+    const lifeProgress = $derived((weeksLived / totalWeeks) * 100);
 
     // Color scheme for different life periods (using Tailwind colors)
     const colorPeriods = [
@@ -37,41 +44,50 @@
     }
 
     // Generate array of weeks for the grid
-    $: weeks = Array.from({ length: totalWeeks }, (_, i) => ({
+    const weeks = $derived(Array.from({ length: totalWeeks }, (_, i) => ({
         index: i,
         classes: getWeekClasses(i)
-    }));
+    })));
 </script>
 
 <div class="container mx-auto px-4 py-8 max-w-7xl">
     <Card>
         <CardHeader>
-            <CardTitle class="text-center text-lg">
-                You have lived for {weeksLived.toLocaleString()} weeks and have {weeksLeft.toLocaleString()} weeks left until you are {lifeExpectancy}.
-            </CardTitle>
+            <div class="flex flex-col items-center gap-4">
+                <CardTitle class="text-center text-lg flex flex-col items-center gap-2">
+                    <span> Life progress: {lifeProgress.toFixed(2)}%</span>
+                    <span> {weeksLived.toLocaleString()} weeks spent • {weeksLeft.toLocaleString()} weeks left. </span>
+                </CardTitle>
+            </div>
         </CardHeader>
         <CardContent>
             <div class="overflow-x-auto">
-                <div class="grid grid-cols-52 gap-0.5 w-fit mx-auto bg-muted/20 p-4 rounded-lg">
-                    {#each weeks as week}
-                        <div 
-                            class={cn(
-                                "w-3 h-3 rounded-sm transition-transform duration-200 hover:scale-125 hover:z-10",
-                                week.classes
-                            )}
-                            title="Week {week.index + 1}"
-                        > </div>
-                    {/each}
-                </div>
-            </div>
-
-            <div class="flex flex-wrap justify-center gap-4 mt-8 p-4 bg-muted/20 rounded-lg">
-                {#each colorPeriods as period}
-                    <div class="flex items-center gap-2 text-sm">
-                        <div class={cn("w-4 h-4 rounded-sm", period.color)} > </div>
-                        <span>Years {period.start}-{period.end}</span>
+                <div class="max-h-[calc(100vh-300px)] overflow-y-auto overflow-x-auto">
+                    <div class="flex justify-center">
+                        <!-- Year labels -->
+                        <div class="flex flex-col justify-around p-2 text-xs text-muted-foreground">
+                            {#each Array.from({ length: Math.ceil(totalWeeks / 52) }, (_, i) => i) as year}
+                                <div class="h-3 flex items-center">
+                                    {#if year % 5 === 0}
+                                        {year}
+                                    {/if}
+                                </div>
+                            {/each}
+                        </div>
+                        <!-- Grid -->
+                        <div class="grid grid-cols-52 gap-[1px] w-fit bg-muted/20 p-2 rounded-lg">
+                            {#each weeks as week}
+                                <div 
+                                    class={cn(
+                                        "w-3 h-3 rounded-sm transition-transform duration-200 hover:scale-125 hover:z-10",
+                                        week.classes
+                                    )}
+                                    title="Week {week.index + 1} (Year {Math.floor(week.index / 52)})"
+                                > </div>
+                            {/each}
+                        </div>
                     </div>
-                {/each}
+                </div>
             </div>
         </CardContent>
     </Card>
@@ -83,14 +99,9 @@
         grid-template-columns: repeat(52, minmax(0, 1fr));
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 640px) {
         :global(.grid-cols-52) {
-            gap: 0.25px;
-        }
-        
-        :global(.grid-cols-52 > *) {
-            width: 0.5rem;
-            height: 0.5rem;
+            gap: 0.5px;
         }
     }
 </style>
