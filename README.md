@@ -35,7 +35,7 @@ A modern, elegant web application that visualizes your life journey in weeks. Bu
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/life-progress.git
+   git clone https://github.com/zed-wong/life-progress.git
    cd life-progress
    ```
 

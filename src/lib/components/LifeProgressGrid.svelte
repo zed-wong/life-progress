@@ -99,21 +99,21 @@
 {#if userData}
     <div class="min-h-screen bg-gradient-to-b from-background to-background/95 py-4 sm:py-12 pt-[env(safe-area-inset-top)] px-[env(safe-area-inset-left)] pb-[env(safe-area-inset-bottom)]">
         <div class="container mx-auto px-2 sm:px-4">
-            <Card class="backdrop-blur-sm bg-background/80 border-muted/20 shadow-xl">
+            <Card class="backdrop-blur-sm bg-background/80 border-muted/20 shadow-xl py-4">
                 <CardHeader class="space-y-4 pb-4 sm:pb-8 pt-2 sm:pt-4">
                     <div class="flex flex-col items-center gap-4 sm:gap-6">
                         <CardTitle class="text-center text-xl sm:text-2xl font-bold flex flex-col items-center gap-2 sm:gap-3">
-                            <span class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                            <span class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mb-6">
                                 {lifeProgress.toFixed(1)}%
                             </span>
                             <div class="flex flex-col items-center gap-1 text-muted-foreground">
-                                <span class="text-base sm:text-lg">{weeksLived.toLocaleString()} weeks lived</span>
+                                <span class="text-xs sm:text-sm">{weeksLived.toLocaleString()} weeks lived</span>
                                 <span class="text-xs sm:text-sm">{weeksLeft.toLocaleString()} weeks remaining</span>
                             </div>
                         </CardTitle>
                     </div>
                 </CardHeader>
-                <CardContent class="p-2 sm:p-6">
+                <CardContent class="p-2 sm:p-4">
                     <div class="flex flex-col gap-4">
                         <div class="flex flex-col gap-2">
                             <div class="flex items-center justify-between">

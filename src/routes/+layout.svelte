@@ -5,6 +5,7 @@
 	import { userDataStore } from '$lib/stores';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { ModeWatcher } from "mode-watcher";
 
 	onMount(() => {
 		if ('serviceWorker' in navigator) {
@@ -29,8 +30,9 @@
 	});
 </script>
 
+<ModeWatcher />
 <div class="min-h-screen bg-background">
-	<!-- <TopBar /> -->
+	<TopBar />
 	<main class="container h-[calc(100vh-100px)] mx-auto">
 		<slot />
 	</main>
