@@ -18,7 +18,7 @@
 	});
 
 	const now = today(getLocalTimeZone());
-	let birthday: DateValue = new CalendarDate(now.year - 30, 1, 1);
+	let birthday: DateValue = new CalendarDate(now.year - 30, now.month, now.day);
 	let lifeExpectancy = 100;
 	let contentRef: HTMLElement | null = null;
 	let popoverOpen = false;
@@ -75,8 +75,9 @@
 								<Calendar 
 									captionLayout="dropdown" 
 									type="single" 
-									bind:value={birthday} 
-									onSelect={handleDateSelect}
+									bind:value={birthday}
+									ref={contentRef}
+									locale={userLocale}
 									class="rounded-lg border shadow-lg"
 								/>
 							</Popover.Content>
