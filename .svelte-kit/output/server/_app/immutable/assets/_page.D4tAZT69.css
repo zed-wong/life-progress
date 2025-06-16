@@ -1,1 +1,0 @@
-.grid-cols-52{grid-template-columns:repeat(52,minmax(0,1fr))}@media (max-width: 640px){.grid-cols-52{gap:1px}}
