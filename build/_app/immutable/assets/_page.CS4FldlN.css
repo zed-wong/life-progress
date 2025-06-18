@@ -1,0 +1,1 @@
+.grid-cols-52{grid-template-columns:repeat(52,minmax(0,1fr))}@media (max-width: 640px){.grid-cols-52>div{min-width:8px;min-height:8px}}html{height:-webkit-fill-available}body{min-height:-webkit-fill-available}
