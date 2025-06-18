@@ -2,7 +2,7 @@
   "name": "Life Progress",
   "short_name": "Life Progress",
   "description": "Visualize your life journey in weeks - gain perspective and make the most of your time",
-  "start_url": "/",
+  "start_url": "/life-progress/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",

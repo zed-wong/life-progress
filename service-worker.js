@@ -1,9 +1,10 @@
 const CACHE_NAME = 'life-progress-v1';
+const BASE_PATH = '/life-progress';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/setup',
-  '/stats',
-  '/manifest.json',
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/setup`,
+  `${BASE_PATH}/stats`,
+  `${BASE_PATH}/manifest.json`,
   // '/icons/icon-192x192.png',
   // '/icons/icon-512x512.png'
 ];
@@ -63,7 +64,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() => {
         // If both cache and network fail, show offline page
         if (event.request.mode === 'navigate') {
-          return caches.match('/');
+          return caches.match(`${BASE_PATH}/`);
         }
       })
   );
